@@ -1,0 +1,57 @@
+<head>
+  <title>clonewars</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Clonewars</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          {{#if loggedIn}}
+          <li><a id="logout" href="#">logout</a></li>
+          {{/if}}
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+  <div class="container container-center">
+    {{#unless loggedIn}}
+    {{> login}}
+    {{else}}
+    {{> mainContent}}
+    {{/unless}}
+  </div>
+</body>
+
+<template name="mainContent">
+  <div class="container">
+    <ul class="list-group">
+    {{#each files}}
+    <li class="list-group-item">
+      {{fileName}}
+    </li>
+    {{/each}}
+    </ul>
+  </div>
+</template>
+
+<template name="login">
+  <div class="login">
+    {{> flashMessages}}
+    <form role="form">
+      <div class="form-group">
+        <input type="text" class="form-control" id="username" placeholder="Redshift User">
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control" id="password" placeholder="Redshift Password">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+</template>
