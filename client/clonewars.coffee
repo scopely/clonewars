@@ -8,8 +8,8 @@ Template.login.events
         Tracker.autorun ->
           Session.set 'username', user
           Session.set 'loggedIn', true
-          Meteor.call 'listFiles', user, (err, files) ->
-            Session.set 'files', files
+          Meteor.subscribe 'files', Session.get('username')
+          Meteor.call 'listFiles', user
       else
         FlashMessages.sendError('Login failed!')
     false
@@ -26,13 +26,7 @@ Template.body.events
       Session.set 'loggedIn', false
 
 Template.fileList.helpers
-  'files': ->
-    files = Session.get 'files'
-    if files
-      username = Session.get 'username'
-      _.map files, (file) ->
-        file.s3Path = "s3://#{file.bucket}/#{username}/#{file.Key}"
-        file
+  'files': -> FileList.find user: Session.get('username')
 
 store = new FS.Store.S3 'files',
   folder: Session.get 'username'
@@ -49,8 +43,7 @@ handleFiles = (event) ->
         fileObj.name "#{username}/#{fileObj.name()}",
           store: store
         fileObj.on 'uploaded', ->
-          Meteor.call 'listFiles', username, (err, files) ->
-            Session.set 'files', files
+          Meteor.call 'listFiles', username
 
 Template.fileList.events
   'dropped #dropzone': handleFiles
@@ -63,7 +56,19 @@ Template.fileList.events
 
   'click .file': (event) ->
     event.preventDefault()
-    console.log event.target.getAttribute('datafile')
+    Session.set 'currentFile', @
+    $('#currentFile').modal()
+
+Template.currentFile.helpers
+  currentFile: -> Session.get 'currentFile'
+
+Template.currentFile.events
+  'click #delete': (event) ->
+    Meteor.call 'deleteFile', @, Session.get('username'), (err, result) ->
+      $('#currentFile').modal('hide')
+      if err
+        msg = err.message
+        FlashMessages.sendError "There was an error deleting the file! #{msg}"
 
 Template.uploadingFile.helpers
   uploading: ->

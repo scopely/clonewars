@@ -55,3 +55,7 @@
 .progress-bar {
   background-color: #3B9FF5;
 }
+
+.danger {
+  color: red;
+}

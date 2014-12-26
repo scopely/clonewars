@@ -5,21 +5,21 @@
 <body>
   <nav class="navbar navbar-default">
     <div class="container-fluid">
-      <!-- Brand and toggle get grouped for better mobile display -->
+
       <div class="navbar-header">
         <a class="navbar-brand" href="#">Clonewars</a>
       </div>
 
-      <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
           {{#if loggedIn}}
           <li><a id="logout" href="#">logout</a></li>
           {{/if}}
         </ul>
-      </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
+      </div>
+    </div>
   </nav>
+
   <div class="container container-center">
     {{#unless loggedIn}}
     {{> login}}
@@ -45,9 +45,33 @@
   {{/if}}
 </template>
 
+<template name="currentFile">
+  <div id="currentFile" class="modal fade">
+    <div class="modal-dialog">
+      {{#with currentFile}}
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">{{Key}}</h4>
+        </div>
+        <div class="modal-body">
+          <p>
+            Placeholder
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button id="delete" type="button" class="btn btn-default danger">Delete</button>
+        </div>
+      </div>
+      {{/with}}
+    </div>
+  </div>
+</template>
+
 <template name="fileList">
   <div class="container">
     {{> flashMessages}}
+    {{> currentFile}}
     <div class="list-group">
       <a href="#" id="dropzone" class="list-group-item">
         <span>Drag and drop a file here!</span>
@@ -55,7 +79,7 @@
       <input type="file" id="dropzoneFile">
       {{> uploadingFile}}
       {{#each files}}
-      <a href="#" datafile="{{s3Path}}" class="list-group-item file">
+      <a href="#" datafile="" class="list-group-item file">
         {{Key}}
         <span class="badge">{{Size}}</span>
       </a>
