@@ -26,4 +26,6 @@ Meteor.methods
       Prefix: "#{user}/"
     files = _.filter files.Contents, ({Key}) -> Key != user + '/'
     _.map files, ({Key, Size}) ->
-      Key: path.basename(Key), Size: filesize(Size)
+      Key: path.basename(Key)
+      Size: filesize(Size)
+      bucket: Meteor.settings.AWS.bucket

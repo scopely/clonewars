@@ -55,9 +55,9 @@
       <input type="file" id="dropzoneFile">
       {{> uploadingFile}}
       {{#each files}}
-      <a href="#" datafile="{{Key}}" class="list-group-item">
-        <span class="badge">{{Size}}</span>
+      <a href="#" datafile="{{s3Path}}" class="list-group-item file">
         {{Key}}
+        <span class="badge">{{Size}}</span>
       </a>
       {{/each}}
     </div>

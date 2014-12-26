@@ -26,7 +26,13 @@ Template.body.events
       Session.set 'loggedIn', false
 
 Template.fileList.helpers
-  'files': -> Session.get 'files'
+  'files': ->
+    files = Session.get 'files'
+    if files
+      username = Session.get 'username'
+      _.map files, (file) ->
+        file.s3Path = "s3://#{file.bucket}/#{username}/#{file.Key}"
+        file
 
 store = new FS.Store.S3 'files',
   folder: Session.get 'username'
@@ -54,6 +60,10 @@ Template.fileList.events
     $('#dropzoneFile').trigger('click')
 
   'change #dropzoneFile': handleFiles
+
+  'click .file': (event) ->
+    event.preventDefault()
+    console.log event.target.getAttribute('datafile')
 
 Template.uploadingFile.helpers
   uploading: ->
