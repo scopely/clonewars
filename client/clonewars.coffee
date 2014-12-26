@@ -35,6 +35,7 @@ Files = new FS.Collection 'files', stores: [store]
 Template.fileList.events
   'dropped #dropzone': (event) ->
     FS.Utility.eachFile event, (file) ->
+      Session.set 'uploading', file
       Files.insert file, (err, fileObj) ->
         if err
           FlashMessages.sendError("An error occurred! #{err.message}")
@@ -43,5 +44,9 @@ Template.fileList.events
           fileObj.name "#{username}/#{fileObj.name()}",
             store: store
           fileObj.on 'uploaded', ->
+            Session.set 'uploading', null
             Meteor.call 'listFiles', username, (err, files) ->
               Session.set 'files', files
+
+Template.uploadingFile.helpers
+  uploading: -> Session.get 'uploading'
