@@ -32,21 +32,36 @@ store = new FS.Store.S3 'files',
   folder: Session.get 'username'
 Files = new FS.Collection 'files', stores: [store]
 
+handleFiles = (event) ->
+  FS.Utility.eachFile event, (file) ->
+    Files.insert file, (err, fileObj) ->
+      if err
+        FlashMessages.sendError("An error occurred! #{err.message}")
+      else
+        Session.set 'uploading', fileObj
+        username = Session.get 'username'
+        fileObj.name "#{username}/#{fileObj.name()}",
+          store: store
+        fileObj.on 'uploaded', ->
+          Meteor.call 'listFiles', username, (err, files) ->
+            Session.set 'files', files
+
 Template.fileList.events
-  'dropped #dropzone': (event) ->
-    FS.Utility.eachFile event, (file) ->
-      Session.set 'uploading', file
-      Files.insert file, (err, fileObj) ->
-        if err
-          FlashMessages.sendError("An error occurred! #{err.message}")
-        else
-          username = Session.get 'username'
-          fileObj.name "#{username}/#{fileObj.name()}",
-            store: store
-          fileObj.on 'uploaded', ->
-            Session.set 'uploading', null
-            Meteor.call 'listFiles', username, (err, files) ->
-              Session.set 'files', files
+  'dropped #dropzone': handleFiles
+
+  'click #dropzone': (event) ->
+    event.preventDefault()
+    $('#dropzoneFile').trigger('click')
+
+  'change #dropzoneFile': handleFiles
 
 Template.uploadingFile.helpers
-  uploading: -> Session.get 'uploading'
+  uploading: ->
+    file = Session.get 'uploading'
+    if file?
+      if file.isUploaded()
+        Session.set 'uploading', null
+      else
+        console.log file.uploadProgress()
+        file.progress = file.uploadProgress()
+        file

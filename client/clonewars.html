@@ -32,15 +32,15 @@
 <template name="uploadingFile">
   {{#if uploading}}
   {{#with uploading}}
-    <li id="uploading" class="list-group-item">
+    <div id="uploading" class="list-group-item">
       {{#unless this.isUploaded}}
       <div class="progress">
-        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-          {{name}}
+        <div class="progress-bar active" role="progressbar" aria-valuenow="{{this.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{this.progress}}%">
+          <span class="filename">{{name}}</span>
         </div>
       </div>
       {{/unless}}
-    </li>
+    </div>
   {{/with}}
   {{/if}}
 </template>
@@ -48,18 +48,19 @@
 <template name="fileList">
   <div class="container">
     {{> flashMessages}}
-    <ul class="list-group">
-    <li id="dropzone" class="list-group-item">
-      <span>Drag and drop a file here!</span>
-    </li>
-    {{> uploadingFile}}
-    {{#each files}}
-    <li class="list-group-item">
-      <span class="badge">{{Size}}</span>
-      {{Key}}
-    </li>
-    {{/each}}
-    </ul>
+    <div class="list-group">
+      <a href="#" id="dropzone" class="list-group-item">
+        <span>Drag and drop a file here!</span>
+      </a>
+      <input type="file" id="dropzoneFile">
+      {{> uploadingFile}}
+      {{#each files}}
+      <a href="#" datafile="{{Key}}" class="list-group-item">
+        <span class="badge">{{Size}}</span>
+        {{Key}}
+      </a>
+      {{/each}}
+    </div>
   </div>
 </template>
 

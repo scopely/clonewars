@@ -22,3 +22,4 @@ cfs:standard-packages
 raix:ui-dropped-event
 cfs:filesystem
 cfs:ui
+cfs:ejson-file

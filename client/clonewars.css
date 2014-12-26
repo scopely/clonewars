@@ -35,3 +35,23 @@
   align-items: center;
   justify-content: center;
 }
+
+#dropzoneFile {
+  display: none;
+}
+
+.progress {
+  position: relative;
+}
+
+.progress span {
+  position: absolute;
+  display: block;
+  width: 100%;
+  color: black;
+  font-weight: bold;
+}
+
+.progress-bar {
+  background-color: #3B9FF5;
+}
