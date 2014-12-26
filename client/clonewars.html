@@ -24,17 +24,33 @@
     {{#unless loggedIn}}
     {{> login}}
     {{else}}
-    {{> mainContent}}
+    {{> fileList}}
     {{/unless}}
   </div>
 </body>
 
-<template name="mainContent">
+<template name="uploadingFile">
+  {{#each uploading}}
+    <li id="uploading" class="list-group-item">
+      {{#unless this.isUploaded}}
+      {{> FS.UploadProgressBar bootstrap=true showPercent=true}}
+      {{/unless}}
+    </li>
+  {{/each}}
+</template>
+
+<template name="fileList">
   <div class="container">
+    {{> flashMessages}}
     <ul class="list-group">
+    <li id="dropzone" class="list-group-item">
+      <span>Drag and drop a file here!</span>
+    </li>
+    {{> uploadingFile}}
     {{#each files}}
     <li class="list-group-item">
-      {{fileName}}
+      <span class="badge">{{Size}}</span>
+      {{Key}}
     </li>
     {{/each}}
     </ul>

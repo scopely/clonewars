@@ -1,7 +1,7 @@
 /* CSS declarations go here */
 .container-center {
-  min-height: 100%;
-  min-height: 100vh;
+  min-height: 70%;
+  min-height: 70vh;
 
   display: flex;
   align-items: center;
@@ -24,4 +24,14 @@
   font-size: 20px;
   margin-bottom: 10px;
   text-align: center;
+}
+
+#dropzone {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  font-size: 30px;
+  color: #777;
+  align-items: center;
+  justify-content: center;
 }

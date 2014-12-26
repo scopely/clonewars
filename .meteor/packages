@@ -11,3 +11,14 @@ ian:bootstrap-3
 austinrivas:postgresql
 coffeescript
 mrt:flash-messages
+eluck:aws-sdk
+meteorhacks:npm
+
+
+npm-container
+dbarrett:dropzonejs
+cfs:s3
+cfs:standard-packages
+raix:ui-dropped-event
+cfs:filesystem
+cfs:ui

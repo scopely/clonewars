@@ -1,8 +1,9 @@
-connectSync = Meteor.wrapAsync(pg.connect, pg)
+connectSync = Meteor.wrapAsync pg.connect, pg
 
 Meteor.methods
   checkAuth: (user, pass) ->
-    connectionString = "postgres://#{user}:#{pass}@#{process.env.URL}"
+    url = Meteor.settings.Redshift.url
+    connectionString = "postgres://#{user}:#{pass}@#{url}"
     try
       connectSync connectionString
       true
