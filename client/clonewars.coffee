@@ -28,7 +28,6 @@ Template.body.events
 Template.fileList.helpers
   'files': -> Session.get 'files'
 
-
 store = new FS.Store.S3 'files',
   folder: Session.get 'username'
 Files = new FS.Collection 'files', stores: [store]
