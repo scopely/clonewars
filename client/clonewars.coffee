@@ -8,14 +8,16 @@ Template.login.events
         Tracker.autorun ->
           Session.set 'username', user
           Session.set 'loggedIn', true
-          Meteor.subscribe 'files', Session.get('username')
           Meteor.call 'listFiles', user
       else
         FlashMessages.sendError('Login failed!')
     false
 
 Template.body.helpers
-  loggedIn: -> Session.get 'loggedIn'
+  loggedIn: ->
+    if Session.get('loggedIn')
+      Tracker.autorun ->
+        Meteor.subscribe 'file-list', Session.get('username')
 
 Template.body.events
   'click #logout': (e) ->
@@ -26,24 +28,15 @@ Template.body.events
       Session.set 'loggedIn', false
 
 Template.fileList.helpers
-  'files': -> FileList.find user: Session.get('username')
-
-store = new FS.Store.S3 'files',
-  folder: Session.get 'username'
-Files = new FS.Collection 'files', stores: [store]
+  'files': -> FileList.find()
 
 handleFiles = (event) ->
-  FS.Utility.eachFile event, (file) ->
-    Files.insert file, (err, fileObj) ->
-      if err
-        FlashMessages.sendError("An error occurred! #{err.message}")
-      else
-        Session.set 'uploading', fileObj
-        username = Session.get 'username'
-        fileObj.name "#{username}/#{fileObj.name()}",
-          store: store
-        fileObj.on 'uploaded', ->
-          Meteor.call 'listFiles', username
+  user = Session.get 'username'
+  files = event.target.files
+  Session.set 'uploadingFile', files[0].name
+  S3.upload files, "/#{user}", (err, result) ->
+    if err
+      FlashMessages.sendError "An error occurred! #{err.message}"
 
 Template.fileList.events
   'dropped #dropzone': handleFiles
@@ -72,11 +65,14 @@ Template.currentFile.events
 
 Template.uploadingFile.helpers
   uploading: ->
-    file = Session.get 'uploading'
+    file = S3.collection.findOne()
     if file?
-      if file.isUploaded()
-        Session.set 'uploading', null
-      else
-        console.log file.uploadProgress()
-        file.progress = file.uploadProgress()
+      uploadingFile = Session.get 'uploadingFile'
+      if file.percent_uploaded < 100
+        file.name = uploadingFile
         file
+      else
+        unless file.uploading
+          user = Session.get 'username'
+          Meteor.call 'addFile',
+            file._id, uploadingFile, file.total_uploaded, user

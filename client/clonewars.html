@@ -30,19 +30,17 @@
 </body>
 
 <template name="uploadingFile">
-  {{#if uploading}}
   {{#with uploading}}
     <div id="uploading" class="list-group-item">
-      {{#unless this.isUploaded}}
+      {{#if uploading}}
       <div class="progress">
-        <div class="progress-bar active" role="progressbar" aria-valuenow="{{this.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{this.progress}}%">
+        <div class="progress-bar active" role="progressbar" style="width: {{percent_uploaded}}%">
           <span class="filename">{{name}}</span>
         </div>
       </div>
-      {{/unless}}
+      {{/if}}
     </div>
   {{/with}}
-  {{/if}}
 </template>
 
 <template name="currentFile">
