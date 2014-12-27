@@ -1,3 +1,5 @@
+uploader = new Slingshot.Upload('files')
+
 Template.login.events
   'submit form': (e) ->
     e.preventDefault()
@@ -32,14 +34,13 @@ Template.fileList.helpers
 
 handleFiles = (event) ->
   user = Session.get 'username'
-  files = event.target.files
-  file = files[0]
+  file = event.target.files[0]
   Session.set 'uploadingFile', file.name
-  S3.upload files, "/#{user}", (err, result) ->
+  uploader.send file, (err, url) ->
     if err
-      FlashMessages.sendError "An error occurred! #{err.message}"
+      console.log err
     else
-      Meteor.call "addFile", result.relative_url, file.name, file.size, user
+      Meteor.call 'listFiles', Session.get('username')
 
 Template.fileList.events
   'dropped #dropzone': handleFiles
@@ -68,9 +69,7 @@ Template.currentFile.events
 
 Template.uploadingFile.helpers
   uploading: ->
-    file = S3.collection.findOne uploading: true
-    if file?
-      uploadingFile = Session.get 'uploadingFile'
-      if file.percent_uploaded < 100
-        file.name = uploadingFile
-        file
+    filename = Session.get 'uploadingFile'
+    if filename and uploader.status() is 'transferring'
+      name: filename
+      percent_uploaded: Math.round(uploader.progress() * 100)

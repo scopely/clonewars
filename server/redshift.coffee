@@ -6,6 +6,7 @@ Meteor.methods
     connectionString = "postgres://#{user}:#{pass}@#{url}"
     try
       connectSync connectionString
+      @setUserId user
       true
     catch e
       false

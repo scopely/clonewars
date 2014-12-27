@@ -1,22 +1,32 @@
 path = Npm.require 'path'
 filesize = Meteor.npmRequire 'filesize'
 
-if Meteor.settings.AWS
-  S3.config =
-    key: Meteor.settings.AWS.accessKeyId
-    secret: Meteor.settings.AWS.secretAccessKey
-    bucket: Meteor.settings.AWS.bucket
-else
-  console.warn "AWS settings missing"
-
 Meteor.publish 'file-list', (user) ->
   FileList.find user: user
 
+AWS.config.update
+  accessKeyId: Meteor.settings.AWSAccessKeyId
+  secretAccessKey: Meteor.settings.AWSSecretAccessKey
+
+Slingshot.createDirective 'files', Slingshot.S3Storage,
+  bucket: Meteor.settings.bucket
+  allowedFileTypes: /.*/
+  maxSize: 0
+  authorize: ->
+    if not @userId
+      throw new Meteor.Error("Login required!")
+    else
+      true
+  key: (file) ->
+    "#{@userId}/#{file.name}"
+
 Meteor.methods
   listFiles: (user) ->
-    listObjectsSync = Meteor.wrapAsync S3.knox.list, S3.knox
+    s3 = new AWS.S3()
+    listObjectsSync = Meteor.wrapAsync s3.listObjects, s3
     files = listObjectsSync
-      prefix: "#{user}/"
+      Bucket: Meteor.settings.bucket
+      Prefix: "#{user}/"
     files = _.filter files.Contents, ({Key}) -> Key != user + '/'
     files = _.map files, ({Key, Size}) ->
       Key: path.basename(Key)
@@ -26,24 +36,10 @@ Meteor.methods
     for i, file of files
       FileList.insert file
 
-  addFile: (s3Path, name, size, user) ->
-    deleteFile = Meteor.wrapAsync S3.knox.deleteFile, S3.knox
-    copyFile = Meteor.wrapAsync S3.knox.copyFile, S3.knox
-    copyFile s3Path, "/#{user}/#{name}", (err, result) ->
-      if err
-        console.log err
-      else
-        deleteFile s3Path
-        FileList.upsert Key: name,
-          {
-            $set:
-              Key: name
-              Size: filesize size
-              user: user
-          }
-
-
   deleteFile: (file, user) ->
-    deleteObjectSync = Meteor.wrapAsync S3.knox.deleteFile, S3.knox
-    deleteObjectSync "/#{user}/#{file.Key}"
+    s3 = new AWS.S3()
+    deleteObjectSync = Meteor.wrapAsync s3.deleteObject, s3
+    deleteObjectSync
+      Key: "#{user}/#{file.Key}"
+      Bucket: Meteor.settings.bucket
     FileList.remove user: user, Key: file.Key
