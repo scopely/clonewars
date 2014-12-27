@@ -26,17 +26,22 @@ Meteor.methods
     for i, file of files
       FileList.insert file
 
-  addFile: (id, name, size, user) ->
-    deleteFileSync = Meteor.wrapAsync S3.knox.deleteFile, S3.knox
-    copyFileSync = Meteor.wrapAsync S3.knox.copyFile, S3.knox
-    ext = path.extname name
-    original = "/#{user}/#{id}#{ext}"
-    copyFileSync original, "/#{user}/#{name}"
-    deleteFileSync original
-    FileList.insert
-      Key: name
-      Size: filesize size
-      user: user
+  addFile: (s3Path, name, size, user) ->
+    deleteFile = Meteor.wrapAsync S3.knox.deleteFile, S3.knox
+    copyFile = Meteor.wrapAsync S3.knox.copyFile, S3.knox
+    copyFile s3Path, "/#{user}/#{name}", (err, result) ->
+      if err
+        console.log err
+      else
+        deleteFile s3Path
+        FileList.upsert Key: name,
+          {
+            $set:
+              Key: name
+              Size: filesize size
+              user: user
+          }
+
 
   deleteFile: (file, user) ->
     deleteObjectSync = Meteor.wrapAsync S3.knox.deleteFile, S3.knox

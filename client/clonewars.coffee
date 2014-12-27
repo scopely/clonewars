@@ -33,10 +33,13 @@ Template.fileList.helpers
 handleFiles = (event) ->
   user = Session.get 'username'
   files = event.target.files
-  Session.set 'uploadingFile', files[0].name
+  file = files[0]
+  Session.set 'uploadingFile', file.name
   S3.upload files, "/#{user}", (err, result) ->
     if err
       FlashMessages.sendError "An error occurred! #{err.message}"
+    else
+      Meteor.call "addFile", result.relative_url, file.name, file.size, user
 
 Template.fileList.events
   'dropped #dropzone': handleFiles
@@ -65,14 +68,9 @@ Template.currentFile.events
 
 Template.uploadingFile.helpers
   uploading: ->
-    file = S3.collection.findOne()
+    file = S3.collection.findOne uploading: true
     if file?
       uploadingFile = Session.get 'uploadingFile'
       if file.percent_uploaded < 100
         file.name = uploadingFile
         file
-      else
-        unless file.uploading
-          user = Session.get 'username'
-          Meteor.call 'addFile',
-            file._id, uploadingFile, file.total_uploaded, user
