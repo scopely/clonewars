@@ -59,3 +59,9 @@
 .danger {
   color: red;
 }
+
+#copyText {
+  margin-bottom: 7px;
+  height: 200px;
+  white-space: nowrap;
+}

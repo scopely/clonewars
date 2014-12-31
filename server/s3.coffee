@@ -43,3 +43,10 @@ Meteor.methods
       Key: "#{user}/#{file.Key}"
       Bucket: Meteor.settings.bucket
     FileList.remove user: user, Key: file.Key
+
+  getCredSpec: () ->
+    accessKey = Meteor.settings.AWSAccessKeyId
+    secretKey = Meteor.settings.AWSSecretAccessKey
+    "aws_access_key_id=#{accessKey};aws_secret_access_key=#{secretKey}"
+
+  getBucket: () -> Meteor.settings.bucket
