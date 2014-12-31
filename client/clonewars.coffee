@@ -5,42 +5,37 @@ Template.login.events
     e.preventDefault()
     user = e.target.username.value
     pass = e.target.password.value
-    Meteor.call 'checkAuth', user, pass, (err, result) ->
-      if result
+    Meteor.loginWithPg user, pass, (err) ->
+      unless err
         Tracker.autorun ->
-          Session.set 'username', user
-          Session.set 'loggedIn', true
-          Meteor.call 'listFiles', user
+          Meteor.call 'listFiles', Meteor.user().user
       else
-        FlashMessages.sendError('Login failed!')
+        FlashMessages.sendError("Login failed: #{err.message}")
     false
 
 Template.body.helpers
   loggedIn: ->
-    if Session.get('loggedIn')
+    if Meteor.user()
       Tracker.autorun ->
-        Meteor.subscribe 'file-list', Session.get('username')
+        Meteor.subscribe 'file-list', Meteor.user().user
 
 Template.body.events
   'click #logout': (e) ->
     e.preventDefault()
-    Session.set 'username', null
-    Session.set 'password', null
-    Tracker.autorun ->
-      Session.set 'loggedIn', false
+    Meteor.logout()
 
 Template.fileList.helpers
   'files': -> FileList.find()
 
 handleFiles = (event) ->
-  user = Session.get 'username'
+  user = Meteor.user().user
   file = event.target.files[0]
   Session.set 'uploadingFile', file.name
   uploader.send file, (err, url) ->
     if err
       console.log err
     else
-      Meteor.call 'listFiles', Session.get('username')
+      Meteor.call 'listFiles', user
 
 Template.fileList.events
   'dropped #dropzone': handleFiles
@@ -61,7 +56,7 @@ Template.currentFile.helpers
 
 Template.currentFile.events
   'click #delete': (event) ->
-    Meteor.call 'deleteFile', @, Session.get('username'), (err, result) ->
+    Meteor.call 'deleteFile', @, Meteor.user().user, (err, result) ->
       $('#currentFile').modal('hide')
       if err
         msg = err.message

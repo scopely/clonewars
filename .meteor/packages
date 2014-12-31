@@ -17,3 +17,5 @@ meteorhacks:npm
 npm-container
 raix:ui-dropped-event
 edgee:slingshot
+accounts-base
+raynes:accounts-pg
