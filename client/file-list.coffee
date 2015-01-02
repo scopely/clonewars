@@ -4,14 +4,17 @@ Template.fileList.helpers
   'files': -> FileList.find()
 
 handleFiles = (event) ->
-  user = Meteor.user().user
-  file = event.target.files[0]
+  if event.type == "drop"
+    files = event.originalEvent.dataTransfer.files
+  else
+    files = event.target.files
+  file = files[0]
   Session.set 'uploadingFile', file.name
   uploader.send file, (err, url) ->
     if err
       console.log err
     else
-      Meteor.call 'listFiles', user
+      Meteor.call 'listFiles'
 
 Template.fileList.events
   'dropped #dropzone': handleFiles

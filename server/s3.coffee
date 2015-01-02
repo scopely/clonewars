@@ -18,10 +18,11 @@ Slingshot.createDirective 'files', Slingshot.S3Storage,
     else
       true
   key: (file) ->
-    "#{@userId}/#{file.name}"
+    "#{Meteor.user().user}/#{file.name}"
 
 Meteor.methods
-  listFiles: (user) ->
+  listFiles: ->
+    user = Meteor.user().user
     s3 = new AWS.S3()
     listObjectsSync = Meteor.wrapAsync s3.listObjects, s3
     files = listObjectsSync
@@ -36,7 +37,8 @@ Meteor.methods
     for i, file of files
       FileList.insert file
 
-  deleteFile: (file, user) ->
+  deleteFile: (file) ->
+    user = Meteor.user().user
     s3 = new AWS.S3()
     deleteObjectSync = Meteor.wrapAsync s3.deleteObject, s3
     deleteObjectSync
