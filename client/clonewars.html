@@ -52,15 +52,21 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title">{{Key}}</h4>
         </div>
-        <form id="copyForm">
+        <form id="copyForm" class="form-horizontal">
           <div class="modal-body">
             <textarea id="copyText" class='form-control' disabled>
             </textarea>
             <div class="form-group">
-              <input type="text" class="form-control" id="table" placeholder="Table name">
+              <label for="table" class="col-sm-2 control-label">Table</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="table">
+              </div>
             </div>
             <div class="form-group">
-              <input type="text" class="form-control" id="delimiter" placeholder="Delimiter">
+              <label for="delimiter" class="col-sm-2 control-label">Delimiter</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="delimiter">
+              </div>
             </div>
           </div>
         <div class="modal-footer">
