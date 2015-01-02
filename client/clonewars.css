@@ -65,3 +65,16 @@
   height: 200px;
   white-space: nowrap;
 }
+
+#copyForm input[type="checkbox"] {
+  margin-left: 0px !important;
+}
+
+#copyForm .control-label {
+  text-align: left;
+  white-space: nowrap;
+}
+
+#currentFile .modal-backdrop {
+  height: 100% !important;
+}
