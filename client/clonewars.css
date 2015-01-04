@@ -64,6 +64,7 @@
   margin-bottom: 7px;
   height: 200px;
   white-space: nowrap;
+  cursor: default;
 }
 
 #copyForm input[type="checkbox"] {
