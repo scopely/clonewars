@@ -50,6 +50,10 @@ Users can click on a file and they'll see a pop up. This is a COPY command build
 
 The resulting COPY command will use the credentials you configured.
 
+## Deploying
+
+TODO after I have deployed.
+
 ## Security Concerns
 
 Yes, a user can take the credentials from the copy command they receive and use those to look at/delete any other user's files. Clonewars is _designed_ to be an internal service, and is mostly useful to folks who don't even know what an AWS access key is.
