@@ -80,7 +80,7 @@ Template.currentFile.helpers
 Template.currentFile.events
   'click #delete': (event) ->
     Meteor.call 'deleteFile', @, Meteor.user().user, (err, result) ->
-      $('#currentFile').modal('hide')
+      $('#currentFile').modal 'hide'
       if err
         msg = err.message
         FlashMessages.sendError "There was an error deleting the file! #{msg}"

@@ -67,14 +67,24 @@
 }
 
 #copyForm input[type="checkbox"] {
-  margin-left: 0px !important;
+  margin-left: 10px !important;
 }
 
 #copyForm .control-label {
   text-align: left;
   white-space: nowrap;
+  font-size: 12px;
 }
 
-#currentFile .modal-backdrop {
-  height: 100% !important;
+.checkbox-group {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#currentFile .modal-dialog {
+  width: 1000px;
+}
+
+#currentFile .modal-dialog {
+  outline: none;
 }
