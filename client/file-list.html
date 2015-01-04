@@ -1,0 +1,33 @@
+<template name="uploadingFile">
+  {{#with uploading}}
+  <div id="uploading" class="list-group-item">
+    {{#if uploading}}
+    <div class="progress">
+      <div class="progress-bar active" role="progressbar" style="width: {{percent_uploaded}}%">
+        <span class="filename">{{name}}</span>
+      </div>
+    </div>
+    {{/if}}
+  </div>
+  {{/with}}
+</template>
+
+<template name="fileList">
+  <div class="container">
+    {{> flashMessages}}
+    {{> currentFile}}
+    <div class="list-group">
+      <a href="#" id="dropzone" class="list-group-item">
+        <span>Drag and drop a file here!</span>
+      </a>
+      <input type="file" id="dropzoneFile">
+      {{> uploadingFile}}
+      {{#each files}}
+      <a href="#" datafile="" class="list-group-item file">
+        {{Key}}
+        <span class="badge">{{Size}}</span>
+      </a>
+      {{/each}}
+    </div>
+  </div>
+</template>
