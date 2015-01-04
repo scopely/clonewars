@@ -85,4 +85,6 @@ Template.currentFile.events
         msg = err.message
         FlashMessages.sendError "There was an error deleting the file! #{msg}"
 
-  'submit #copyForm': handleCopyChange
+  'keyup #copyForm input[type="text"]': handleCopyChange
+  'change #copyForm select': handleCopyChange
+  'change #copyForm input[type="checkbox"]': handleCopyChange
