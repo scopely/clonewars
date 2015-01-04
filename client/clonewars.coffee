@@ -6,7 +6,8 @@ Template.login.events
     Meteor.loginWithPg user, pass, (err) ->
       unless err
         Tracker.autorun ->
-          Meteor.call 'listFiles', Meteor.user().user
+          if user = Meteor.user()
+            Meteor.call 'listFiles', user.user
       else
         FlashMessages.sendError("Login failed: #{err.message}")
     false
