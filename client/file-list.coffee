@@ -29,6 +29,7 @@ Template.fileList.events
     event.preventDefault()
     Session.set 'currentFile', @
     $('#currentFile').modal backdrop: false
+    $('#table').focus()
 
 Template.uploadingFile.helpers
   uploading: ->
