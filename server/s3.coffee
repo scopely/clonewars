@@ -47,8 +47,14 @@ Meteor.methods
     FileList.remove user: user, Key: file.Key
 
   getCredSpec: () ->
-    accessKey = Meteor.settings.AWSAccessKeyId
-    secretKey = Meteor.settings.AWSSecretAccessKey
+    sts = new AWS.STS()
+    assumeRole = Meteor.wrapAsync sts.assumeRole, sts
+    creds = assumeRole
+      RoleArn: Meteor.settings.AWSReadRoleArn
+      RoleSessionName: 'temporary-credentials'
+    console.log creds
+    accessKey = creds.Credentials.AccessKeyId
+    secretKey = creds.Credentials.SecretAccessKey
     "aws_access_key_id=#{accessKey};aws_secret_access_key=#{secretKey}"
 
   getBucket: () -> Meteor.settings.bucket

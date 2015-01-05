@@ -59,6 +59,17 @@ controlType = (element) ->
   else
     element.getAttribute 'type'
 
+getCreds = (cb) ->
+  if creds = Session.get 'creds'
+    cb creds
+  else
+    Meteor.call 'getCredSpec', (err, creds) ->
+      if err
+        FlashMessages.sendError "Could not gen creds for you! #{err.message}"
+      else
+        Session.set 'creds', creds
+        cb creds
+
 handleCopyChange = (event) ->
   data = $('#copyForm .copy-control').toArray().reduce ((acc, input) ->
     id = input.getAttribute 'id'
@@ -68,7 +79,7 @@ handleCopyChange = (event) ->
       when 'checkbox' then acc[id] = $(input).is ':checked'
     acc),
     {}
-  Meteor.call 'getCredSpec', (err, creds) =>
+  getCreds (creds) =>
     Meteor.call 'getBucket', (err, bucket) =>
       s3Path = "s3://#{bucket}/#{@user}/#{@Key}"
       $('#copyText').val buildCopyCommand(data, s3Path, creds)
@@ -88,3 +99,7 @@ Template.currentFile.events
   'keyup #copyForm input[type="text"]': handleCopyChange
   'change #copyForm select': handleCopyChange
   'change #copyForm input[type="checkbox"]': handleCopyChange
+
+Template.currentFile.rendered = ->
+  @$('#currentFile').on 'hidden.bs.modal', (event) ->
+    Session.set 'creds', null
