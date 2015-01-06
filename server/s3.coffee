@@ -52,7 +52,6 @@ Meteor.methods
     creds = assumeRole
       RoleArn: Meteor.settings.AWSReadRoleArn
       RoleSessionName: 'temporary-credentials'
-    console.log creds
     accessKey = creds.Credentials.AccessKeyId
     secretKey = creds.Credentials.SecretAccessKey
     "aws_access_key_id=#{accessKey};aws_secret_access_key=#{secretKey}"
