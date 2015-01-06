@@ -9,7 +9,7 @@ AWS.config.update
   secretAccessKey: Meteor.settings.AWSSecretAccessKey
 
 Slingshot.createDirective 'files', Slingshot.S3Storage,
-  bucket: Meteor.settings.bucket
+  bucket: Meteor.settings.public.bucket
   allowedFileTypes: /.*/
   maxSize: 0
   authorize: ->
@@ -56,5 +56,3 @@ Meteor.methods
     accessKey = creds.Credentials.AccessKeyId
     secretKey = creds.Credentials.SecretAccessKey
     "aws_access_key_id=#{accessKey};aws_secret_access_key=#{secretKey}"
-
-  getBucket: () -> Meteor.settings.bucket

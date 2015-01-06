@@ -11,6 +11,10 @@
           <div class="modal-body row">
             <div class="col-lg-6">
               <textarea id="copyText" class='form-control' disabled>
+                {{#with copyCommand}}COPY {{table}}
+                FROM '{{s3Path}}'
+                CREDENTIALS '{{creds ..}}'{{options}};
+                {{/with}}
               </textarea>
               <div class="form-group">
                 <label for="table" class="col-sm-3 control-label">Table</label>

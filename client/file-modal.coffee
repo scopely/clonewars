@@ -1,7 +1,5 @@
-buildCopyCommand = (data, s3Path, creds) ->
-  base = """COPY #{data.table}
-            FROM #{s3Path}
-            CREDENTIALS '#{creds}'"""
+buildCopyCommand = (data, s3Path) ->
+  base = ''
   if delimiter = data.delimiter
     base += """\nCSV
                DELIMITER '#{delimiter}'"""
@@ -51,7 +49,10 @@ buildCopyCommand = (data, s3Path, creds) ->
   base += "\nFILLRECORD" if data.fillrecord
   base += "\nNOLOAD" if data.noload
   base += "\nROUNDEC" if data.roundec
-  base + ';'
+  Session.set 'copyCommand',
+    table: data.table or '...'
+    options: base
+    s3Path: s3Path
 
 controlType = (element) ->
   if element.nodeName == "SELECT"
@@ -60,15 +61,12 @@ controlType = (element) ->
     element.getAttribute 'type'
 
 getCreds = (cb) ->
-  if creds = Session.get 'creds'
-    cb creds
-  else
+  unless Session.get 'creds'
     Meteor.call 'getCredSpec', (err, creds) ->
       if err
         FlashMessages.sendError "Could not gen creds for you! #{err.message}"
       else
         Session.set 'creds', creds
-        cb creds
 
 handleCopyChange = (event) ->
   data = $('#copyForm .copy-control').toArray().reduce ((acc, input) ->
@@ -79,14 +77,15 @@ handleCopyChange = (event) ->
       when 'checkbox' then acc[id] = $(input).is ':checked'
     acc),
     {}
-  getCreds (creds) =>
-    Meteor.call 'getBucket', (err, bucket) =>
-      s3Path = "s3://#{bucket}/#{@user}/#{@Key}"
-      $('#copyText').val buildCopyCommand(data, s3Path, creds)
+  bucket = Meteor.settings.public.bucket
+  s3Path = "s3://#{bucket}/#{@user}/#{@Key}"
+  buildCopyCommand(data, s3Path)
   false
 
 Template.currentFile.helpers
   currentFile: -> Session.get 'currentFile'
+  copyCommand: -> Session.get 'copyCommand'
+  creds: -> Session.get 'creds'
 
 Template.currentFile.events
   'click #delete': (event) ->
@@ -103,3 +102,7 @@ Template.currentFile.events
 Template.currentFile.rendered = ->
   @$('#currentFile').on 'hidden.bs.modal', (event) ->
     Session.set 'creds', null
+    Session.set 'copyCommand', null
+    Session.set 'currentFile', null
+  @$('#currentFile').on 'shown.bs.modal', (event) ->
+    getCreds()
