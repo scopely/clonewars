@@ -1,3 +1,12 @@
+<template name="copyBox">
+  <textarea id="copyText" class='form-control' disabled>
+    {{#with copyCommand}}COPY {{table}}
+    FROM '{{s3Path}}'
+    CREDENTIALS '{{creds ..}}'{{options}};
+    {{/with}}
+  </textarea>
+</template>
+
 <template name="currentFile">
   <div id="currentFile" class="modal fade">
     <div class="modal-dialog" tabindex="-1">
@@ -10,12 +19,7 @@
         <form id="copyForm" class="form-horizontal form-group-sm">
           <div class="modal-body row">
             <div class="col-lg-6">
-              <textarea id="copyText" class='form-control' disabled>
-                {{#with copyCommand}}COPY {{table}}
-                FROM '{{s3Path}}'
-                CREDENTIALS '{{creds ..}}'{{options}};
-                {{/with}}
-              </textarea>
+              {{> copyBox}}
               <div class="form-group">
                 <label for="table" class="col-sm-3 control-label">Table</label>
                 <div class="col-sm-9">

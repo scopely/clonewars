@@ -82,10 +82,12 @@ handleCopyChange = (event) ->
   buildCopyCommand(data, s3Path)
   false
 
-Template.currentFile.helpers
-  currentFile: -> Session.get 'currentFile'
+Template.copyBox.helpers
   copyCommand: -> Session.get 'copyCommand'
   creds: -> Session.get 'creds'
+
+Template.currentFile.helpers
+  currentFile: -> Session.get 'currentFile'
 
 Template.currentFile.events
   'click #delete': (event) ->
