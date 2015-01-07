@@ -77,8 +77,9 @@ handleCopyChange = (event) ->
       when 'checkbox' then acc[id] = $(input).is ':checked'
     acc),
     {}
+  currentFile = Session.get 'currentFile'
   bucket = Meteor.settings.public.bucket
-  s3Path = "s3://#{bucket}/#{@user}/#{@Key}"
+  s3Path = "s3://#{bucket}/#{currentFile.user}/#{currentFile.Key}"
   buildCopyCommand(data, s3Path)
   false
 
@@ -88,6 +89,41 @@ Template.copyBox.helpers
 
 Template.currentFile.helpers
   currentFile: -> Session.get 'currentFile'
+
+  controls: ->
+    leftCheckboxes: [
+      {
+        id: 'escape'
+        label: 'Allow Escape'
+      }
+      {
+        id: 'emptyasnull'
+        label: 'Null Empty Columns'
+      }
+      {
+        id: 'blanksasnull'
+        label: 'Null Blank Columns'
+      }
+      {
+        id: 'encrypted'
+        label: 'Encrypted'
+      }
+    ]
+
+  rightCheckboxes: [
+    {
+      id: 'ignoreblanklines'
+      label: 'Ignore Blank Lines'
+    }
+    {
+      id: 'truncatecolumns'
+      label: 'Truncate Columns'
+    }
+    {
+      id: 'trimblanks'
+      label: 'Trim Trailing Blanks'
+    }
+  ]
 
 Template.currentFile.events
   'click #delete': (event) ->

@@ -7,6 +7,39 @@
   </textarea>
 </template>
 
+<template name="text">
+  <div class="form-group">
+    <label for="{{id}}" class="col-sm-3 control-label">{{label}}</label>
+    <div class="col-sm-9">
+      <input type="text" class="copy-control form-control" placeholder="{{placeholder}}" id="{{id}}">
+    </div>
+  </div>
+</template>
+
+<template name="dropdown">
+  <div class="form-group">
+    <label for="{{id}}" class="col-sm-3 control-label">{{label}}</label>
+    <div class="col-sm-9">
+      <select id="{{id}}" class="copy-control form-control">
+        {{#each options}}
+        <option value="{{value}}">
+          {{text}}
+        </option>
+        {{/each}}
+      </select>
+    </div>
+  </div>
+</template>
+
+<template name="checkbox">
+  <div class="form-group">
+    <label for="{{id}}" class="col-sm-6 control-label">{{label}}</label>
+    <div class="col-sm-6 checkbox">
+      <input type="checkbox" class="copy-control" id="{{id}}">
+    </div>
+  </div>
+</template>
+
 <template name="currentFile">
   <div id="currentFile" class="modal fade">
     <div class="modal-dialog" tabindex="-1">
@@ -63,50 +96,18 @@
                 </div>
               </div>
               <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="escape" class="col-sm-6 control-label">Allow Escape</label>
-                  <div class="col-sm-6 checkbox">
-                    <input type="checkbox" class="copy-control" id="escape">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="emptyasnull" class="col-sm-6 control-label">Null Empty Columns</label>
-                  <div class="col-sm-6 checkbox">
-                    <input type="checkbox" class="copy-control" id="emptyasnull">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="blanksasnull" class="col-sm-6 control-label">Null Blank Columns</label>
-                  <div class="col-sm-6 checkbox">
-                    <input type="checkbox" class="copy-control" id="blanksasnull">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="encrypted" class="col-sm-6 control-label">Encrypted</label>
-                  <div class="col-sm-6 checkbox">
-                    <input type="checkbox" class="copy-control" id="encrypted">
-                  </div>
-                </div>
+                {{#with controls}}
+                  {{#each leftCheckboxes}}
+                    {{> checkbox}}
+                  {{/each}}
+                {{/with}}
               </div>
               <div class="col-lg-6">
-                <div class="form-group">
-                  <label for="ignoreblanklines" class="col-sm-6 control-label">Ignore Blank Lines</label>
-                  <div class="col-sm-6 checkbox">
-                    <input type="checkbox" class="copy-control" id="ignoreblanklines">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="truncatecolumns" class="col-sm-6 control-label">Truncate Columns</label>
-                  <div class="col-sm-6 checkbox">
-                    <input type="checkbox" class="copy-control" id="truncatecolumns">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="trimblanks" class="col-sm-6 control-label">Trim Trailing Blanks</label>
-                  <div class="col-sm-6 checkbox">
-                    <input type="checkbox" class="copy-control" id="trimblanks">
-                  </div>
-                </div>
+                {{#with controls}}
+                  {{#each rightCheckboxes}}
+                    {{> checkbox}}
+                  {{/each}}
+                {{/with}}
               </div>
             </div>
             <div class="col-lg-6">
