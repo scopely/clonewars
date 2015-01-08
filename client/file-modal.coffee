@@ -45,7 +45,7 @@ buildCopyCommand = (data, s3Path) ->
   base += "\nSTATUPDATE ON" if data.statupdate
   base += "\nSSH" if data.ssh
   base += "\nREMOVEQUOTES" if data.removequotes
-  base += "\nEXPLICIT_IDS" if data.explicitids
+  base += "\nEXPLICIT_IDS" if data.explicit_ids
   base += "\nFILLRECORD" if data.fillrecord
   base += "\nNOLOAD" if data.noload
   base += "\nROUNDEC" if data.roundec
@@ -90,40 +90,9 @@ Template.copyBox.helpers
 Template.currentFile.helpers
   currentFile: -> Session.get 'currentFile'
 
-  controls: ->
-    leftCheckboxes: [
-      {
-        id: 'escape'
-        label: 'Allow Escape'
-      }
-      {
-        id: 'emptyasnull'
-        label: 'Null Empty Columns'
-      }
-      {
-        id: 'blanksasnull'
-        label: 'Null Blank Columns'
-      }
-      {
-        id: 'encrypted'
-        label: 'Encrypted'
-      }
-    ]
+  # Control descriptions in controls.coffee
+  controls: -> controls
 
-  rightCheckboxes: [
-    {
-      id: 'ignoreblanklines'
-      label: 'Ignore Blank Lines'
-    }
-    {
-      id: 'truncatecolumns'
-      label: 'Truncate Columns'
-    }
-    {
-      id: 'trimblanks'
-      label: 'Trim Trailing Blanks'
-    }
-  ]
 
 Template.currentFile.events
   'click #delete': (event) ->
@@ -143,4 +112,5 @@ Template.currentFile.rendered = ->
     Session.set 'copyCommand', null
     Session.set 'currentFile', null
   @$('#currentFile').on 'shown.bs.modal', (event) ->
+    $('#table').focus()
     getCreds()
