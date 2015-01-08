@@ -81,6 +81,10 @@
   font-size: 12px;
 }
 
+#copyForm .popoverLabel {
+  outline: none;
+}
+
 .checkbox-group {
   padding-left: 0;
   padding-right: 0;
