@@ -1,7 +1,8 @@
 uploader = new Slingshot.Upload('files')
 
 Template.fileList.helpers
-  'files': -> FileList.find()
+  'files': -> FileList.find {}, sort: LastModified: -1
+  'date': -> moment(@LastModified).fromNow()
 
 handleFiles = (event) ->
   if event.type == "drop"
