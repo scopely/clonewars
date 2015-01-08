@@ -43,7 +43,7 @@ Slingshot.createDirective 'files', Slingshot.S3Storage,
     "#{Meteor.user().user}/#{file.name}"
 
 Meteor.methods
-  listFiles: -> listFiles Meteor.user()._id
+  listFiles: -> listFiles @userId
 
   deleteFile: (file) ->
     user = Meteor.user().user
