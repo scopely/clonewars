@@ -161,7 +161,7 @@
       id: 'compupdate'
       label: 'Comp update'
       checked: true
-      popover: "Perform compression analysis if the table is empty. Turn off if you don't care about compression."
+      popover: "Perform compression analysis if the table is empty. Turn this off if you're frequently copying large data sets into an empty table."
     }
     {
       id: 'statupdate'
