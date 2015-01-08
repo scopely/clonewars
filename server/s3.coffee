@@ -44,10 +44,10 @@ Meteor.methods
     user = Meteor.user().user
     s3 = new AWS.S3()
     deleteObjectSync = Meteor.wrapAsync s3.deleteObject, s3
+    FileList.remove userId: Meteor.userId, Key: file.Key
     deleteObjectSync
       Key: "#{user}/#{file.Key}"
-      Bucket: Meteor.settings.bucket
-    FileList.remove user: user, Key: file.Key
+      Bucket: Meteor.settings.public.bucket
 
   getCredSpec: () ->
     sts = new AWS.STS()
