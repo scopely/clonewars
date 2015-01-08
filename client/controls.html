@@ -1,5 +1,6 @@
 <template name="popover">
-  <a class="popoverLabel" tabindex="5" href="#" data-container="body" data-trigger="focus" data-placement="top" data-toggle="popover" data-title="{{id}}">
+  <!-- The space after id is necessary in data-title to prevent 'null' from breaking it. Because lol. -->
+  <a class="popoverLabel" tabindex="5" href="#" data-container="body" data-trigger="focus" data-placement="top" data-toggle="popover" data-title="{{id}} ">
     {{label}}
   </a>
   <div class="hidden" id="{{id}}-content">
