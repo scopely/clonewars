@@ -131,11 +131,6 @@
       label: 'Null Blank Columns'
       popover: "If a column is a blank (whitespace-only), set it to null."
     }
-    {
-      id: 'encrypted'
-      label: 'Encrypted'
-      popover: "Check if the file has client side encryption."
-    }
   ]
 
   rightCheckboxes: [
