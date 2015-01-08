@@ -13,7 +13,7 @@ handleFiles = (event) ->
   Session.set 'uploadingFile', file.name
   uploader.send file, (err, url) ->
     if err
-      console.log err
+      FlashMessages.sendError "An error occurred uploading the file: #{err.msg}"
     else
       Meteor.call 'listFiles'
 
