@@ -5,15 +5,12 @@
 # but you can also edit it by hand.
 
 meteor-platform
-insecure
 ian:bootstrap-3
 austinrivas:postgresql
 coffeescript
 mrt:flash-messages
 eluck:aws-sdk
 meteorhacks:npm
-
-
 npm-container
 raix:ui-dropped-event
 edgee:slingshot
