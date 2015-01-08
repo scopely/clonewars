@@ -22,7 +22,6 @@ Meteor.publish 'file-list', ->
       Key: 1
       Size: 1
       LastModified: 1
-      user: 1
 
 AWS.config.update
   accessKeyId: Meteor.settings.AWSAccessKeyId

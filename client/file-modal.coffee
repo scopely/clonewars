@@ -78,7 +78,7 @@ handleCopyChange = (event) ->
     {}
   currentFile = Session.get 'currentFile'
   bucket = Meteor.settings.public.bucket
-  s3Path = "s3://#{bucket}/#{currentFile.user}/#{currentFile.Key}"
+  s3Path = "s3://#{bucket}/#{Meteor.user().user}/#{currentFile.Key}"
   buildCopyCommand(data, s3Path)
   false
 
