@@ -13,10 +13,7 @@ Template.login.events
     false
 
 Template.body.helpers
-  loggedIn: ->
-    if Meteor.user()
-      Tracker.autorun ->
-        Meteor.subscribe 'file-list', Meteor.user().user
+  loggedIn: -> Meteor.user()
 
 Template.body.events
   'click #logout': (e) ->
