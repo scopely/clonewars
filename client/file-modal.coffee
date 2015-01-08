@@ -82,6 +82,10 @@ handleCopyChange = (event) ->
   buildCopyCommand(data, s3Path)
   false
 
+Tracker.autorun ->
+  if user = Meteor.user()
+    Meteor.subscribe 'file-list', user.user
+
 Template.copyBox.helpers
   copyCommand: -> Session.get 'copyCommand'
   creds: -> Session.get 'creds'

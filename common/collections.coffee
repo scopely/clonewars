@@ -1,1 +1,1 @@
-@FileList = new Mongo.Collection('fileList')
+@FileList = new Mongo.Collection('file-list')

@@ -2,7 +2,12 @@ path = Npm.require 'path'
 filesize = Meteor.npmRequire 'filesize'
 
 Meteor.publish 'file-list', (user) ->
-  FileList.find user: user
+  FileList.find user: user,
+    fields:
+      Key: 1
+      Size: 1
+      LastModified: 1
+      user: 1
 
 AWS.config.update
   accessKeyId: Meteor.settings.AWSAccessKeyId
@@ -26,12 +31,13 @@ Meteor.methods
     s3 = new AWS.S3()
     listObjectsSync = Meteor.wrapAsync s3.listObjects, s3
     files = listObjectsSync
-      Bucket: Meteor.settings.bucket
+      Bucket: Meteor.settings.public.bucket
       Prefix: "#{user}/"
     files = _.filter files.Contents, ({Key}) -> Key != user + '/'
-    files = _.map files, ({Key, Size}) ->
+    files = _.map files, ({Key, Size, LastModified}) ->
       Key: path.basename(Key)
       Size: filesize(Size)
+      LastModified: LastModified
       user: user
     FileList.remove user: user
     for i, file of files
