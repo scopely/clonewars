@@ -89,3 +89,7 @@
 #currentFile .modal-dialog {
   outline: none;
 }
+
+.popoverLabel, .popoverLabel:hover {
+  color: #333;
+}
