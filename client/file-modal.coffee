@@ -50,7 +50,7 @@ buildCopyCommand = (data, s3Path) ->
   base += "\nNOLOAD" if data.noload
   base += "\nROUNDEC" if data.roundec
   Session.set 'copyCommand',
-    table: data.table or '...'
+    table: data['table-name'] or '...'
     options: base
     s3Path: s3Path
 
@@ -93,6 +93,11 @@ Template.currentFile.helpers
   # Control descriptions in controls.coffee
   controls: -> controls
 
+Template.popover.rendered = ->
+  $('[data-toggle="popover"]').popover
+    content: ->
+      $(@).next().html()
+    html: true
 
 Template.currentFile.events
   'click #delete': (event) ->
@@ -112,5 +117,5 @@ Template.currentFile.rendered = ->
     Session.set 'copyCommand', null
     Session.set 'currentFile', null
   @$('#currentFile').on 'shown.bs.modal', (event) ->
-    $('#table').focus()
+    $('#table-name').focus()
     getCreds()

@@ -1,8 +1,9 @@
 @controls =
   textFields: [
     {
-      id: 'table'
+      id: 'table-name'
       label: 'Table'
+      popover: "Stuff"
     }
     {
       id: 'delimiter'
