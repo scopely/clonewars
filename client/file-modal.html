@@ -7,58 +7,6 @@
   </textarea>
 </template>
 
-<template name="popover">
-  <a class="popoverLabel" tabindex="0" href="#" data-container="body" data-trigger="focus" data-placement="top" data-toggle="popover" data-title="{{id}}">
-    {{label}}
-  </a>
-  <div class="hidden" id="{{id}}-content">
-    {{popover}}
-    <br/>
-    <a class="btn btn-default docs" target="_blank" href="http://docs.aws.amazon.com/redshift/latest/dg/r_COPY.html#copy-{{id}}">
-      Click here for official docs!
-    </a>
-  </div>
-</template>
-
-<template name="text">
-  <div class="form-group">
-    <label for="{{id}}" class="col-sm-3 control-label">
-      {{> popover this}}
-    </label>
-    <div class="col-sm-9">
-      <input type="text" class="copy-control form-control" placeholder="{{placeholder}}" id="{{id}}">
-    </div>
-  </div>
-</template>
-
-<template name="dropdown">
-  <div class="form-group">
-    <label for="{{id}}" class="col-sm-3 control-label">
-      {{> popover this}}
-    </label>
-    <div class="col-sm-9">
-      <select id="{{id}}" class="copy-control form-control">
-        {{#each options}}
-        <option value="{{value}}">
-          {{text}}
-        </option>
-        {{/each}}
-      </select>
-    </div>
-  </div>
-</template>
-
-<template name="checkbox">
-  <div class="form-group">
-    <label for="{{id}}" class="col-sm-6 control-label">
-      {{> popover this}}
-    </label>
-    <div class="col-sm-6 checkbox">
-      <input checked={{checked}} type="checkbox" class="copy-control" id="{{id}}">
-    </div>
-  </div>
-</template>
-
 <template name="currentFile">
   <div id="currentFile" class="modal fade">
     <div class="modal-dialog" tabindex="-1">
