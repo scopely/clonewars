@@ -107,3 +107,7 @@
 .badge {
   min-width: 80px;
 }
+
+.large-badge {
+  min-width: 120px;
+}
