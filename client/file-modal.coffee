@@ -118,4 +118,5 @@ Template.currentFile.rendered = ->
     Session.set 'currentFile', null
   @$('#currentFile').on 'shown.bs.modal', (event) ->
     $('#table-name').focus()
+    $('[data-toggle="popover"]').popover 'hide'
     getCreds()

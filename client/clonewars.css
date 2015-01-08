@@ -93,3 +93,7 @@
 .popoverLabel, .popoverLabel:hover {
   color: #333;
 }
+
+.docs {
+  margin-top: 15px;
+}

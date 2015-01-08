@@ -3,7 +3,7 @@
     {
       id: 'table-name'
       label: 'Table'
-      popover: "Stuff"
+      popover: "Table name to copy into."
     }
     {
       id: 'delimiter'

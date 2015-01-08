@@ -8,13 +8,13 @@
 </template>
 
 <template name="popover">
-  <a class="popoverLabel" href="#" data-container="body" data-trigger="focus" data-placement="top" data-toggle="popover" data-title="{{id}}">
+  <a class="popoverLabel" tabindex="0" href="#" data-container="body" data-trigger="focus" data-placement="top" data-toggle="popover" data-title="{{id}}">
     {{label}}
   </a>
   <div class="hidden" id="{{id}}-content">
     {{popover}}
     <br/>
-    <a target="_blank" href="http://docs.aws.amazon.com/redshift/latest/dg/r_COPY.html#copy-{{id}}">
+    <a class="btn btn-default docs" target="_blank" href="http://docs.aws.amazon.com/redshift/latest/dg/r_COPY.html#copy-{{id}}">
       Click here for official docs!
     </a>
   </div>
