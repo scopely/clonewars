@@ -25,8 +25,6 @@ buildCopyCommand = (data, s3Path) ->
     base += "\nFIXEDWIDTH '#{fixedwidth}'"
   if region = data.region
     base += "\nREGION '#{region}'"
-  if manifest = data.manifest
-    base += "\nMANIFEST '#{manifest}'"
   if comprows = data.comprows
     base += "\nCOMPROWS #{comprows}"
   if acceptinvchars = data.acceptinvchars
@@ -34,6 +32,7 @@ buildCopyCommand = (data, s3Path) ->
   if (encoding = data.encoding) and encoding != "UTF8"
     base += "\nENCODING #{encoding}"
 
+  base += "\nMANIFEST" if data.manifest
   base += "\nESCAPE" if escape = data.escape
   base += "\nEMPTYASNULL" if data.emptyasnull
   base += "\nBLANKSASNULL" if data.blanksasnull

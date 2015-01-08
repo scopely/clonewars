@@ -33,7 +33,9 @@
 
 <template name="dropdown">
   <div class="form-group">
-    <label for="{{id}}" class="col-sm-3 control-label">{{label}}</label>
+    <label for="{{id}}" class="col-sm-3 control-label">
+      {{> popover this}}
+    </label>
     <div class="col-sm-9">
       <select id="{{id}}" class="copy-control form-control">
         {{#each options}}
@@ -48,7 +50,9 @@
 
 <template name="checkbox">
   <div class="form-group">
-    <label for="{{id}}" class="col-sm-6 control-label">{{label}}</label>
+    <label for="{{id}}" class="col-sm-6 control-label">
+      {{> popover this}}
+    </label>
     <div class="col-sm-6 checkbox">
       <input checked={{checked}} type="checkbox" class="copy-control" id="{{id}}">
     </div>
