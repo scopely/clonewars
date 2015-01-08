@@ -1,22 +1,25 @@
 path = Npm.require 'path'
 filesize = Meteor.npmRequire 'filesize'
 
-Meteor.publish 'file-list', ->
-  {user} = Meteor.users.findOne _id: @userId
+listFiles = (userId) ->
+  {user} = Meteor.users.findOne _id: userId
   s3 = new AWS.S3()
   listObjectsSync = Meteor.wrapAsync s3.listObjects, s3
   files = listObjectsSync
     Bucket: Meteor.settings.public.bucket
     Prefix: "#{user}/"
   files = _.filter files.Contents, ({Key}) -> Key != user + '/'
-  files = _.map files, ({Key, Size, LastModified}) =>
+  files = _.map files, ({Key, Size, LastModified}) ->
     Key: path.basename(Key)
     Size: filesize(Size)
     LastModified: LastModified
-    userId: @userId
-  FileList.remove userId: @userId
+    userId: userId
+  FileList.remove userId: userId
   for i, file of files
     FileList.insert file
+
+Meteor.publish 'file-list', ->
+  listFiles @userId
   FileList.find userId: @userId,
     fields:
       Key: 1
@@ -40,6 +43,8 @@ Slingshot.createDirective 'files', Slingshot.S3Storage,
     "#{Meteor.user().user}/#{file.name}"
 
 Meteor.methods
+  listFiles: -> listFiles Meteor.user()._id
+
   deleteFile: (file) ->
     user = Meteor.user().user
     s3 = new AWS.S3()
