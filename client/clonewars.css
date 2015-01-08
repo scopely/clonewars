@@ -97,3 +97,7 @@
 .docs {
   margin-top: 15px;
 }
+
+.badge {
+  min-width: 80px;
+}
