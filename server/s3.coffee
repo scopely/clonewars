@@ -19,12 +19,13 @@ listFiles = (userId) ->
     FileList.insert file
 
 Meteor.publish 'file-list', ->
-  listFiles @userId
-  FileList.find userId: @userId,
-    fields:
-      Key: 1
-      Size: 1
-      LastModified: 1
+  if @userId
+    listFiles @userId
+    FileList.find userId: @userId,
+      fields:
+        Key: 1
+        Size: 1
+        LastModified: 1
 
 AWS.config.update
   accessKeyId: Meteor.settings.AWSAccessKeyId
