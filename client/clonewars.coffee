@@ -12,6 +12,8 @@ Template.login.events
         FlashMessages.sendError("Login failed: #{err.message}")
     false
 
+Template.login.rendered = -> $('#username').focus()
+
 Template.body.helpers
   loggedIn: -> Meteor.user()
 
