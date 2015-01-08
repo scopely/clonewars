@@ -1,6 +1,5 @@
 /* CSS declarations go here */
 .container-center {
-  min-height: 70%;
   min-height: 70vh;
 
   display: flex;
@@ -87,8 +86,10 @@
   padding-right: 0;
 }
 
-#currentFile .modal-dialog {
-  width: 1000px;
+@media(min-width:768px) {
+  #currentFile .modal-dialog {
+    min-width: 950px;
+  }
 }
 
 #currentFile .modal-dialog {
