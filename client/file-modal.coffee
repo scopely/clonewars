@@ -84,7 +84,7 @@ handleCopyChange = (event) ->
 
 Tracker.autorun ->
   if user = Meteor.user()
-    Meteor.subscribe 'file-list', user.user
+    Meteor.subscribe 'file-list'
 
 Template.copyBox.helpers
   copyCommand: -> Session.get 'copyCommand'

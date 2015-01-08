@@ -4,12 +4,7 @@ Template.login.events
     user = e.target.username.value
     pass = e.target.password.value
     Meteor.loginWithPg user, pass, (err) ->
-      unless err
-        Tracker.autorun ->
-          if user = Meteor.user()
-            Meteor.call 'listFiles', user.user
-      else
-        FlashMessages.sendError("Login failed: #{err.message}")
+      FlashMessages.sendError("Login failed: #{err.message}") if err
     false
 
 Template.login.rendered = -> $('#username').focus()
