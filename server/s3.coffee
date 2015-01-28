@@ -63,5 +63,4 @@ Meteor.methods
       RoleSessionName: 'temporary-credentials'
     accessKey = creds.Credentials.AccessKeyId
     secretKey = creds.Credentials.SecretAccessKey
-    token = creds.Credentials.SessionToken
-    "aws_access_key_id=#{accessKey};aws_secret_access_key=#{secretKey};token=#{token}"
+    "aws_access_key_id=#{accessKey};aws_secret_access_key=#{secretKey}"
